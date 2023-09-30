@@ -1,28 +1,19 @@
-import { useRef, useEffect } from "react";
+import React, { useRef } from "react";
+import Webcam from "react-webcam";
 
 function App() {
-  const videoRef = useRef(null);
-  useEffect(() => {
-    getVideo();
-  }, [videoRef]);
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: { width: 300 } })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.error("error:", err);
-      });
+  const webcamRef = useRef(null);
+
+  const capture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    // Use the captured image as required (e.g., display it on the page)
+    console.log(imageSrc);
   };
 
   return (
     <div>
-      <button>Take a photo</button>
-      <video ref={videoRef} />
-      <canvas />
+      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+      <button onClick={capture}>Capture</button>
     </div>
   );
 }
